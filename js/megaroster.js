@@ -14,28 +14,57 @@
 // new Megaroster();
 
 var Megaroster = function() {
-  this.meats = ['pork','steak','chicken'];
-//  var students = [];
+  var that = this;
+
+  this.save = function () {   //  save to local storage
+    try {
+      return (localStorage.students = JSON.stringify(that.students));
+    }
+    catch(err) {
+      return false;
+    }
+  };
+
+  this.load = function () {
+    try {
+      that.students = JSON.parse(localStorage.students);
+      $.each(that.students, function(index, student_name) {
+        that.appendToList(student_name);
+      });
+    }
+    catch (err) {
+      return false;
+    }
+  };
+
+  this.appendToList = function(student_name) {
+      $('#students').append('<li class = "list-group-item">' + student_name + '</li>');
+  };
+
+  this.addStudent = function (student_name) {
+        that.students.push(student_name);
+        that.appendToList(student_name);
+        console.log(that.save());
+  };
 
   this.init = function() {
-    var that = this;
-    this.students = [];
+    that.students = [];
+    that.load();
 
     $('#new_student_form').on('submit', function(ev) {
       ev.preventDefault();
-      //  add student to the array
       var student_name = $(this.student_name).val();
-      that.students.push(student_name);
-      //  display full list in the html
-      $('#students').append('<li class = "list-group-item">' + student_name + '</li>');
+
+      that.addStudent(student_name);
+
       $(this.student_name)
         .val('')   //  clear the value of the above $ field
         .focus();  //  refocus
     } );
   };
+
 };
 document.querySelector('form').student_name.focus();
-//var f = document.querySelector('form');
-//f.student_name.focus();
+
 var roster = new Megaroster();
 roster.init();
