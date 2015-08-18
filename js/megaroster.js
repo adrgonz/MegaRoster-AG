@@ -43,7 +43,7 @@ var Megaroster = function() {
         .addClass('student')
         .prepend(student_name)
         .removeClass('hidden');
-        
+
       $('#students').append(li);
   };
 
@@ -51,6 +51,17 @@ var Megaroster = function() {
         that.students.push(student_name);
         that.appendToList(student_name);
         console.log(that.save());
+  };
+
+  this.delete = function () {
+// remove it from the array
+// remove it from the list_item_template
+    $(this).closest('li').remove;
+//  update local storage
+  };
+
+  this.edit = function () {
+
   };
 
   this.init = function() {
@@ -67,6 +78,16 @@ var Megaroster = function() {
         .val('')   //  clear the value of the above $ field
         .focus();  //  refocus
     } );
+
+    $('button.delete').on('click', function() {
+          // remove from students
+          $(this).closest('li').remove();  //  remove from teh ol
+          // remove from the local storage
+    });
+
+    $('button.edit').on('click', function () {
+      alert('Edit');
+    });
   };
 
 };

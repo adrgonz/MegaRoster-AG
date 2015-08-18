@@ -1,0 +1,11 @@
+button.delete {
+  position:absolute;
+  top: 5px;
+  right: 50px;
+}
+
+button.edit {
+  position:absolute;
+  top: 5px;
+  right: 8px;
+}
