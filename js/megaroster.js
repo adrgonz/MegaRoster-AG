@@ -28,8 +28,10 @@ var Megaroster = function() {
   this.load = function () {
     try {
       that.students = JSON.parse(localStorage.students);
-      $.each(that.students, function(index, student_name) {
-        that.appendToList(student_name);
+      $.each(that.students, function(index, student_data) {
+        var student = new Student();
+        student.init(student_data)
+        student.appendToList();
       });
     }
     catch (err) {
@@ -37,20 +39,31 @@ var Megaroster = function() {
     }
   };
 
-  this.appendToList = function(student_name) {
-      var li = $('#list_item_template').clone();
-      li.removeAttr('id')
-        .addClass('student')
-        .prepend(student_name)
-        .removeClass('hidden');
-
-      $('#students').append(li);
-  };
+  // this.appendToList = function(student_name) {
+  //     var li = $('#list_item_template').clone();
+  //     li.removeAttr('id')
+  //       .addClass('student')
+  //       .prepend(student_name)
+  //       .removeClass('hidden');
+  //
+  //     $('#students').append(li);
+  // };
 
   this.addStudent = function (student_name) {
-        that.students.push(student_name);
-        that.appendToList(student_name);
-        console.log(that.save());
+      var student = new Student();
+
+      student.init({
+        name: student_name
+      });
+
+    //  student.students.push(student_name);
+    //  I thought that this would have to be a student.property thing as well!!??
+       that.students.push(student_name);
+
+      student.appendToList();
+      //that.appendToList(student_name);
+      //console.log(that.save());
+      that.save();
   };
 
   this.delete = function () {
@@ -66,6 +79,7 @@ var Megaroster = function() {
 
   this.init = function() {
     that.students = [];
+    Student.counter = 0;
     that.load();
 
     $('#new_student_form').on('submit', function(ev) {
