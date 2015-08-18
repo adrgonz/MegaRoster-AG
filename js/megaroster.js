@@ -33,6 +33,7 @@ var Megaroster = function() {
         var student = new Student();
         student.init(student_data)
         student.appendToList();
+        debugger;
         that.students.push(student);
       });
     }
@@ -91,10 +92,25 @@ var Megaroster = function() {
 
     label.addClass('hidden');
     li.find('.btn-group').addClass('hidden');
-    
+
     li.append(edit_form);
+
+
   };
 
+  this.cancelEdit = function(ev) {
+    var li, edit_form, label;
+    li = $(this).closest('li');
+    label = li.find('label');
+
+    edit_form = $(this).closest('form');
+    edit_form.remove();
+
+    label.removeClass('hidden');
+    li.find('.btn-group').removeClass('hidden');
+  };
+
+//  everything in this function is triggered / called when the page is loaded
   this.init = function() {
     that.students = [];
     Student.counter = 0;
@@ -135,10 +151,11 @@ var Megaroster = function() {
     //      self.students.splice(self.students.indexOf(current_student), 1);
           li.remove();  //  remove from teh ol
           // remove from the local storage
-      //    that.save();
+          that.save();
     });
 
     $(document).on('click', 'button.edit', that.createdEditForm);
+    $(document).on('click', 'button.cancel', that.cancelEdit);
   };
 
 };
