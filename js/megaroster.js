@@ -27,11 +27,13 @@ var Megaroster = function() {
 
   this.load = function () {
     try {
-      that.students = JSON.parse(localStorage.students);
-      $.each(that.students, function(index, student_data) {
+//      that.students = JSON.parse(localStorage.students);
+      var student_data_objects = JSON.parse(localStorage.students);
+      $.each(student_data_objecs, function(index, student_data) {
         var student = new Student();
         student.init(student_data)
         student.appendToList();
+        that.students.push(student);
       });
     }
     catch (err) {
@@ -57,8 +59,7 @@ var Megaroster = function() {
       });
 
     //  student.students.push(student_name);
-    //  I thought that this would have to be a student.property thing as well!!??
-       that.students.push(student_name);
+       that.students.push(student);
 
       student.appendToList();
       //that.appendToList(student_name);
@@ -66,15 +67,32 @@ var Megaroster = function() {
       that.save();
   };
 
-  this.delete = function () {
-// remove it from the array
-// remove it from the list_item_template
-    $(this).closest('li').remove;
-//  update local storage
-  };
+//   this.delete = function () {
+// // remove it from the array
+// // remove it from the list_item_template
+//     $(this).closest('li').remove;
+// //  update local storage
+//   };
+//
+//   this.edit = function () {
+//
+//   };
+  this.createdEditForm = function(ev) {
+    var li, edit_form, label;
+    li = $(this).closest('li');
+    label = li.find('label');
 
-  this.edit = function () {
+    //  append a clone of edit form template to hte li
+      $('#students').append(li);
+    edit_form = $('#edit_form_template')
+        .clone()
+        .removeAttr('id')
+        .removeClass('hidden');
 
+    label.addClass('hidden');
+    li.find('.btn-group').addClass('hidden');
+    
+    li.append(edit_form);
   };
 
   this.init = function() {
@@ -93,19 +111,38 @@ var Megaroster = function() {
         .focus();  //  refocus
     } );
 
-    $('button.delete').on('click', function() {
+    // $('document').on('click', 'button.delete', function() {
+    //       // remove from students
+    //       var li = $(this).closest('li');
+    //       li.remove();  //  remove from teh ol
+    //       // remove from the local storage
+    // });
+
+    $(document).on('click', 'button.delete', function() {
           // remove from students
-          $(this).closest('li').remove();  //  remove from teh ol
+          var li = $(this).closest('li');
+          // remove from array
+          var id = li.attr('data-id');
+
+// this next block does the same as the following line
+           $.each(that.students, function(index, current_student) {
+             if (current_student.id.toString() === id.toString()) {
+               that.students.splice(index, 1);
+               return false;
+             }
+           });
+
+    //      self.students.splice(self.students.indexOf(current_student), 1);
+          li.remove();  //  remove from teh ol
           // remove from the local storage
+      //    that.save();
     });
 
-    $('button.edit').on('click', function () {
-      alert('Edit');
-    });
+    $(document).on('click', 'button.edit', that.createdEditForm);
   };
 
 };
-document.querySelector('form').student_name.focus();
+//document.querySelector('form').student_name.focus();
 
 var roster = new Megaroster();
 roster.init();
