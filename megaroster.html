@@ -5,6 +5,7 @@
     <title>Mega Roster</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="css/megaroster.css"  charset="utf-8">
     <!--[if lt IE 9]>
     <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>;
@@ -15,8 +16,14 @@
     <div class="well col-sm-8 col-sm-offset-2 col-xs-12">
       <h1>MEGA Roster</h1>
 
-      <ol id="students" class="list-group">
-        <!-- <li class="list-group-item">Adriana - Awesomesauce</li> -->
+      <ol id="students" class="list-group" class="btn-delete">
+        <li id = "list_item_template" class = "list-group-item hidden">
+          <button class="btn btn-sm btn-danger delete">
+            <i class = "fa fa-bell-slash-o"></i>
+            </button>
+          <button class="btn btn-sm btn-success edit">
+            <i class = "fa fa-cogs"></i>
+          </button>
       </ol>
 
       <form role = "form" id = "new_student_form" class="form-inline" >
@@ -26,6 +33,7 @@
         </label>
       </form>
     </div>
+
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js" ></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.js" ></script>

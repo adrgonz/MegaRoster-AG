@@ -38,7 +38,13 @@ var Megaroster = function() {
   };
 
   this.appendToList = function(student_name) {
-      $('#students').append('<li class = "list-group-item">' + student_name + '</li>');
+      var li = $('#list_item_template').clone();
+      li.removeAttr('id')
+        .addClass('student')
+        .prepend(student_name)
+        .removeClass('hidden');
+        
+      $('#students').append(li);
   };
 
   this.addStudent = function (student_name) {
