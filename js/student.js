@@ -25,8 +25,10 @@ var Student = function() {
       li.removeAttr('id')
         .attr('data-id',that.id)
         .addClass('student')
-        .prepend(that.name)
+        //.prepend(that.name)
         .removeClass('hidden');
+
+        li.find('label').append(that.name);
 
       $('#students').append(li);
   };

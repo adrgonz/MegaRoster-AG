@@ -1,18 +1,3 @@
-// function Megaroster() {
-//   function Megaroster() {
-//     debugger;
-//     this.students = [];
-//   }
-//   return Megaroster;
-// }();
-// ///  Megatask function is here twice because the outer defines the function
-// //  and the inner function initializes Megatask
-// //  calling new Megatask actually runs the inner function and instantsiates it
-// //  the (stuff)(); is dumb as hell and defines and runs the function as soon
-// //as the page is loaded.
-// //  this didn't work anyway!!!
-// new Megaroster();
-
 var Megaroster = function() {
   var that = this;
 
@@ -26,14 +11,12 @@ var Megaroster = function() {
   };
 
   this.load = function () {
-    try {
-//      that.students = JSON.parse(localStorage.students);
+    try {    //      that.students = JSON.parse(localStorage.students);
       var student_data_objects = JSON.parse(localStorage.students);
       $.each(student_data_objecs, function(index, student_data) {
         var student = new Student();
         student.init(student_data)
         student.appendToList();
-        debugger;
         that.students.push(student);
       });
     }
@@ -82,9 +65,8 @@ var Megaroster = function() {
     var li, edit_form, label;
     li = $(this).closest('li');
     label = li.find('label');
-
     //  append a clone of edit form template to hte li
-      $('#students').append(li);
+  //??//    $('#students').append(li);
     edit_form = $('#edit_form_template')
         .clone()
         .removeAttr('id')
@@ -94,20 +76,49 @@ var Megaroster = function() {
     li.find('.btn-group').addClass('hidden');
 
     li.append(edit_form);
-
-
+    edit_form.find('input[name=student_name]')
+        .val(label.text())
+        .focus()
+        .select();
   };
 
   this.cancelEdit = function(ev) {
     var li, edit_form, label;
     li = $(this).closest('li');
     label = li.find('label');
-
+debugger;
     edit_form = $(this).closest('form');
     edit_form.remove();
 
     label.removeClass('hidden');
     li.find('.btn-group').removeClass('hidden');
+  };
+
+  this.updateStudent = function(ev) {
+    ev.preventDefault();
+    var form = this;
+console.log('in update student');
+debugger;
+    //  get the id of the updated student
+    var id = $(this).closest('li').attr('data-id');
+    //  find student record with that id
+    var student = Student.getStudentById(id);
+    //  change name of student object
+    student.name = this.student_name.value;
+    //  my way
+    // //  display updated name in the list
+    // var li = $(this).closest('li');
+    // var label = li.find('label');
+    // li.label.text = student.name;
+    // Davey's way
+
+    $(form).siblings('label').text(student.name);
+
+    //  update local storage
+    that.cancelEdit.apply(form);
+    that.save();
+
+
   };
 
 //  everything in this function is triggered / called when the page is loaded
@@ -126,13 +137,6 @@ var Megaroster = function() {
         .val('')   //  clear the value of the above $ field
         .focus();  //  refocus
     } );
-
-    // $('document').on('click', 'button.delete', function() {
-    //       // remove from students
-    //       var li = $(this).closest('li');
-    //       li.remove();  //  remove from teh ol
-    //       // remove from the local storage
-    // });
 
     $(document).on('click', 'button.delete', function() {
           // remove from students
@@ -156,6 +160,7 @@ var Megaroster = function() {
 
     $(document).on('click', 'button.edit', that.createdEditForm);
     $(document).on('click', 'button.cancel', that.cancelEdit);
+    $(document).on('submit', 'form.edit', that.updateStudent);
   };
 
 };
